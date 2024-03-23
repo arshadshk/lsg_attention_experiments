@@ -6,14 +6,14 @@ from transformers.models.bert.configuration_bert import BertConfig
 import sys
 
 AUTO_MAP = {
-        "AutoModel": "modeling_lsg_bert.LSGBertModel",
-        "AutoModelForCausalLM": "modeling_lsg_bert.LSGBertLMHeadModel",
-        "AutoModelForMaskedLM": "modeling_lsg_bert.LSGBertForMaskedLM",
-        "AutoModelForPreTraining": "modeling_lsg_bert.LSGBertForPreTraining",
-        "AutoModelForMultipleChoice": "modeling_lsg_bert.LSGBertForMultipleChoice",
-        "AutoModelForQuestionAnswering": "modeling_lsg_bert.LSGBertForQuestionAnswering",
-        "AutoModelForSequenceClassification": "modeling_lsg_bert.LSGBertForSequenceClassification",
-        "AutoModelForTokenClassification": "modeling_lsg_bert.LSGBertForTokenClassification"
+        "AutoModel": "modeling_lsg_bert.BertModel",
+        "AutoModelForCausalLM": "modeling_lsg_bert.BertLMHeadModel",
+        "AutoModelForMaskedLM": "modeling_lsg_bert.BertForMaskedLM",
+        "AutoModelForPreTraining": "modeling_lsg_bert.BertForPreTraining",
+        "AutoModelForMultipleChoice": "modeling_lsg_bert.BertForMultipleChoice",
+        "AutoModelForQuestionAnswering": "modeling_lsg_bert.BertForQuestionAnswering",
+        "AutoModelForSequenceClassification": "modeling_lsg_bert.BertForSequenceClassification",
+        "AutoModelForTokenClassification": "modeling_lsg_bert.BertForTokenClassification"
     }
 
 class LSGBertConfig(BertConfig):
@@ -1024,7 +1024,7 @@ class LSGBertPreTrainedModel(BertPreTrainedModel):
             module.gradient_checkpointing = value
 
 
-class LSGBertModel(LSGBertPreTrainedModel, BertModel):
+class BertModel(LSGBertPreTrainedModel, BertModel):
     """
     This class overrides :class:`~transformers.BertModel`. Please check the superclass for the appropriate
     documentation alongside usage examples.
@@ -1072,7 +1072,7 @@ class LSGBertModel(LSGBertPreTrainedModel, BertModel):
         return extended_attention_mask
 
 
-class LSGBertForPreTraining(LSGBertPreTrainedModel, BertForPreTraining):
+class BertForPreTraining(LSGBertPreTrainedModel, BertForPreTraining):
 
     _tied_weights_keys = ["predictions.decoder.bias", "cls.predictions.decoder.weight"]
 
@@ -1080,14 +1080,14 @@ class LSGBertForPreTraining(LSGBertPreTrainedModel, BertForPreTraining):
         
         LSGBertPreTrainedModel.__init__(self, config)
 
-        self.bert = LSGBertModel(config)
+        self.bert = BertModel(config)
         self.cls = BertPreTrainingHeads(config)
         
         # Initialize weights and apply final processing
         self.post_init()
 
 
-class LSGBertLMHeadModel(LSGBertPreTrainedModel, BertLMHeadModel):
+class BertLMHeadModel(LSGBertPreTrainedModel, BertLMHeadModel):
 
     _tied_weights_keys = ["predictions.decoder.bias", "cls.predictions.decoder.weight"]
 
@@ -1098,14 +1098,14 @@ class LSGBertLMHeadModel(LSGBertPreTrainedModel, BertLMHeadModel):
         if not config.is_decoder:
             logger.warning("If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`")
 
-        self.bert = LSGBertModel(config, add_pooling_layer=False)
+        self.bert = BertModel(config, add_pooling_layer=False)
         self.cls = BertOnlyMLMHead(config)
 
         # Initialize weights and apply final processing
         self.post_init()
 
 
-class LSGBertForMaskedLM(LSGBertPreTrainedModel, BertForMaskedLM):
+class BertForMaskedLM(LSGBertPreTrainedModel, BertForMaskedLM):
     """
     This class overrides :class:`~transformers.BertForMaskedLM`. Please check the superclass for the appropriate
     documentation alongside usage examples.
@@ -1119,11 +1119,11 @@ class LSGBertForMaskedLM(LSGBertPreTrainedModel, BertForMaskedLM):
 
         if config.is_decoder:
             logger.warning(
-                "If you want to use `LSGBertForMaskedLM` make sure `config.is_decoder=False` for "
+                "If you want to use `BertForMaskedLM` make sure `config.is_decoder=False` for "
                 "bi-directional self-attention."
             )
 
-        self.bert = LSGBertModel(config, add_pooling_layer=False)
+        self.bert = BertModel(config, add_pooling_layer=False)
         self.cls = BertOnlyMLMHead(config)
 
         # Initialize weights and apply final processing
@@ -1136,14 +1136,14 @@ class LSGBertForNextSentencePrediction(LSGBertPreTrainedModel, BertForNextSenten
 
         LSGBertPreTrainedModel.__init__(self, config)
 
-        self.bert = LSGBertModel(config)
+        self.bert = BertModel(config)
         self.cls = BertOnlyNSPHead(config)
         
         # Initialize weights and apply final processing
         self.post_init()
 
 
-class LSGBertForSequenceClassification(LSGBertPreTrainedModel, BertForSequenceClassification):
+class BertForSequenceClassification(LSGBertPreTrainedModel, BertForSequenceClassification):
     """
     This class overrides :class:`~transformers.BertForSequenceClassification`. Please check the superclass for the
     appropriate documentation alongside usage examples.
@@ -1156,7 +1156,7 @@ class LSGBertForSequenceClassification(LSGBertPreTrainedModel, BertForSequenceCl
         self.num_labels = config.num_labels
         self.config = config
 
-        self.bert = LSGBertModel(config)
+        self.bert = BertModel(config)
         classifier_dropout = (
             config.classifier_dropout if config.classifier_dropout is not None else config.hidden_dropout_prob
         )
@@ -1167,7 +1167,7 @@ class LSGBertForSequenceClassification(LSGBertPreTrainedModel, BertForSequenceCl
         self.post_init()
 
         
-class LSGBertForMultipleChoice(LSGBertPreTrainedModel, BertForMultipleChoice):
+class BertForMultipleChoice(LSGBertPreTrainedModel, BertForMultipleChoice):
     """
     This class overrides :class:`~transformers.BertForMultipleChoice`. Please check the superclass for the
     appropriate documentation alongside usage examples.
@@ -1177,7 +1177,7 @@ class LSGBertForMultipleChoice(LSGBertPreTrainedModel, BertForMultipleChoice):
         
         LSGBertPreTrainedModel.__init__(self, config)
 
-        self.bert = LSGBertModel(config)
+        self.bert = BertModel(config)
         classifier_dropout = (
             config.classifier_dropout if config.classifier_dropout is not None else config.hidden_dropout_prob
         )
@@ -1188,7 +1188,7 @@ class LSGBertForMultipleChoice(LSGBertPreTrainedModel, BertForMultipleChoice):
         self.post_init()
 
 
-class LSGBertForTokenClassification(LSGBertPreTrainedModel, BertForTokenClassification):
+class BertForTokenClassification(LSGBertPreTrainedModel, BertForTokenClassification):
     """
     This class overrides :class:`~transformers.BertForTokenClassification`. Please check the superclass for the
     appropriate documentation alongside usage examples.
@@ -1200,7 +1200,7 @@ class LSGBertForTokenClassification(LSGBertPreTrainedModel, BertForTokenClassifi
 
         self.num_labels = config.num_labels
 
-        self.bert = LSGBertModel(config, add_pooling_layer=False)
+        self.bert = BertModel(config, add_pooling_layer=False)
         classifier_dropout = (
             config.classifier_dropout if config.classifier_dropout is not None else config.hidden_dropout_prob
         )
@@ -1211,7 +1211,7 @@ class LSGBertForTokenClassification(LSGBertPreTrainedModel, BertForTokenClassifi
         self.post_init()
 
 
-class LSGBertForQuestionAnswering(LSGBertPreTrainedModel, BertForQuestionAnswering):
+class BertForQuestionAnswering(LSGBertPreTrainedModel, BertForQuestionAnswering):
     """
     This class overrides :class:`~transformers.BertForQuestionAnswering`. Please check the superclass for the
     appropriate documentation alongside usage examples.
@@ -1223,7 +1223,7 @@ class LSGBertForQuestionAnswering(LSGBertPreTrainedModel, BertForQuestionAnsweri
 
         self.num_labels = config.num_labels
 
-        self.bert = LSGBertModel(config, add_pooling_layer=False)
+        self.bert = BertModel(config, add_pooling_layer=False)
         self.qa_outputs = nn.Linear(config.hidden_size, config.num_labels)
 
         # Initialize weights and apply final processing

@@ -7,14 +7,14 @@ except:
 class BertConversionScript(ConversionScript):
 
     _ARCHITECTURE_TYPE_DICT = {
-        "BertModel": ("LSGBertModel", LSGBertModel),
-        "BertForMaskedLM": ("LSGBertForMaskedLM", LSGBertForMaskedLM),
-        "BertForPreTraining": ("LSGBertForPreTraining", LSGBertForPreTraining),
-        "BertLMHeadModel": ("LSGBertLMHeadModel", LSGBertLMHeadModel),
-        "BertForMultipleChoice": ("LSGBertForMultipleChoice", LSGBertForMultipleChoice),
-        "BertForQuestionAnswering": ("LSGBertForQuestionAnswering", LSGBertForQuestionAnswering),
-        "BertForSequenceClassification": ("LSGBertForSequenceClassification", LSGBertForSequenceClassification),
-        "BertForTokenClassification": ("LSGBertForTokenClassification", LSGBertForTokenClassification)
+        "BertModel": ("BertModel", BertModel),
+        "BertForMaskedLM": ("BertForMaskedLM", BertForMaskedLM),
+        "BertForPreTraining": ("BertForPreTraining", BertForPreTraining),
+        "BertLMHeadModel": ("BertLMHeadModel", BertLMHeadModel),
+        "BertForMultipleChoice": ("BertForMultipleChoice", BertForMultipleChoice),
+        "BertForQuestionAnswering": ("BertForQuestionAnswering", BertForQuestionAnswering),
+        "BertForSequenceClassification": ("BertForSequenceClassification", BertForSequenceClassification),
+        "BertForTokenClassification": ("BertForTokenClassification", BertForTokenClassification)
     }
     _ARCHITECTURE_TYPE_DICT = {**{"LSG" + k: v for k, v in _ARCHITECTURE_TYPE_DICT.items()}, **_ARCHITECTURE_TYPE_DICT}
 

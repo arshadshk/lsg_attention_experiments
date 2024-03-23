@@ -71,12 +71,12 @@ converter = LSGConverter(max_sequence_length=4096)
 # Example 1
 model, tokenizer = converter.convert_from_pretrained("bert-base-uncased", num_global_tokens=7)
 print(type(model))
-# <class 'lsg_converter.bert.modeling_lsg_bert.LSGBertForMaskedLM'>
+# <class 'lsg_converter.bert.modeling_lsg_bert.BertForMaskedLM'>
 
 # Example 2
 model, tokenizer = converter.convert_from_pretrained("bert-base-uncased", architecture="BertForSequenceClassification", use_auth_token=True)
 print(type(model))
-# <class 'lsg_converter.bert.modeling_lsg_bert.LSGBertForSequenceClassification'>
+# <class 'lsg_converter.bert.modeling_lsg_bert.BertForSequenceClassification'>
 ```
 
 ## Without package
